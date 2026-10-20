@@ -3,20 +3,222 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Calculadora de Estátistica</title>
+	<title>Calculadora de Estatística</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			user-select: none;
+			box-sizing: border-box;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		}
+
+		:root {
+			--primary: #4F46E5;
+			--primary-hover: #4338CA;
+			--danger: #EF4444;
+			--danger-hover: #DC2626;
+			--success: #10B981;
+			--bg-gradient: linear-gradient(135deg, #EEF2F6 0%, #E2E8F0 100%);
+			--card-bg: rgba(255, 255, 255, 0.85);
+			--input-bg: #FFFFFF;
+			--input-border: #CBD5E1;
+			--button-secondary-bg: #E2E8F0;
+			--button-secondary-text: #475569;
+			--button-secondary-active: #CBD5E1;
+			--text-main: #1E293B;
+			--text-muted: #64748B;
+			--list-bg: rgba(255, 255, 255, 0.6);
+			--item-bg: #FFFFFF;
+			--item-shadow: rgba(0, 0, 0, 0.02);
+			--card-border: rgba(255, 255, 255, 0.5);
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg-gradient: linear-gradient(135deg, #0F172A 0%, #020617 100%);
+				--card-bg: rgba(30, 41, 59, 0.7);
+				--input-bg: #0F172A;
+				--input-border: #334155;
+				--button-secondary-bg: #334155;
+				--button-secondary-text: #E2E8F0;
+				--button-secondary-active: #475569;
+				--text-main: #F8FAFC;
+				--text-muted: #94A3B8;
+				--list-bg: rgba(15, 23, 42, 0.5);
+				--item-bg: #1E293B;
+				--item-shadow: rgba(0, 0, 0, 0.2);
+				--card-border: rgba(255, 255, 255, 0.05);
+			}
+		}
+
+		body {
+			background: var(--bg-gradient);
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			padding: 16px;
+			color: var(--text-main);
+			transition: background 0.3s ease;
+		}
+
+		main {
+			background: var(--card-bg);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+			width: 100%;
+			max-width: 480px;
+			border-radius: 24px;
+			padding: 24px;
+			box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+			border: 1px solid var(--card-border);
+			transition: background 0.3s ease, border 0.3s ease;
+		}
+
+		#myinput {
+			width: 100%;
+			padding: 16px;
+			font-size: 18px;
+			border-radius: 14px;
+			border: 2px solid var(--input-border);
+			background: var(--input-bg);
+			color: var(--text-main);
+			outline: none;
+			transition: all 0.2s ease;
+			text-align: center;
+			margin-bottom: 16px;
+		}
+
+		#myinput:focus {
+			border-color: var(--primary);
+			box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.25);
+		}
+
+		.buttons-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 12px;
+			margin-bottom: 24px;
+		}
+
+		button {
+			width: 100%;
+			padding: 14px 10px;
+			font-size: 14px;
+			font-weight: 600;
+			border: none;
+			border-radius: 12px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		button:nth-child(1) {
+			background-color: var(--primary);
+			color: white;
+		}
+
+		button:nth-child(1):active {
+			background-color: var(--primary-hover);
+		}
+
+		button:nth-child(2) {
+			background-color: var(--button-secondary-bg);
+			color: var(--button-secondary-text);
+		}
+
+		button:nth-child(2):active {
+			background-color: var(--button-secondary-active);
+		}
+
+		button:nth-child(3) {
+			grid-column: span 2;
+			background-color: var(--success);
+			color: white;
+			font-size: 16px;
+			padding: 16px;
+		}
+
+		button:nth-child(3):active {
+			opacity: 0.9;
+		}
+
+		button:nth-child(4) {
+			grid-column: span 2;
+			background-color: transparent;
+			color: var(--danger);
+			border: 1px dashed var(--danger);
+		}
+
+		button:nth-child(4):active {
+			background-color: rgba(239, 68, 68, 0.1);
+		}
+
+		button:active {
+			transform: scale(0.97);
+		}
+
+		h3 {
+			font-size: 15px;
+			color: var(--text-muted);
+			margin-bottom: 10px;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			margin-top: 16px;
+		}
+
+		ul {
+			list-style: none;
+			background: var(--list-bg);
+			border-radius: 14px;
+			padding: 8px;
+			min-height: 50px;
+			border: 1px solid rgba(0, 0, 0, 0.03);
+			margin-bottom: 12px;
+			transition: background 0.3s ease;
+		}
+
+		ul li {
+			padding: 10px 14px;
+			background: var(--item-bg);
+			color: var(--text-main);
+			border-radius: 8px;
+			margin-bottom: 6px;
+			font-size: 15px;
+			font-weight: 500;
+			box-shadow: 0 1px 3px var(--item-shadow);
+			display: inline-block;
+			margin-right: 6px;
+			transition: background 0.3s ease, color 0.3s ease;
+		}
+
+		ul li:last-child {
+			margin-bottom: 0;
+		}
+
+		#estatistics li {
+			display: block;
+			margin-right: 0;
+			border-left: 4px solid var(--success);
+		}
+	</style>
 </head>
 <body>
 	<main>
 
 		<input type="number" id="myinput" placeholder="insira um valor">
 
-		<button onclick="addNumber()">adicionar numero a lista</button>
-
-		<button onclick="removeNumber()">remover numero a lista</button>
-
-		<button onclick="calculator()">calcular estátistica</button>
-
-		<button onclick="clearList()">limpar lista</button>
+		<div class="buttons-grid">
+			<button onclick="addNumber()">adicionar numero a lista</button>
+			<button onclick="removeNumber()">remover numero a lista</button>
+			<button onclick="calculator()">calcular estátistica</button>
+			<button onclick="clearList()">limpar dados</button>
+		</div>
 
 		<h3>Lista de Valores:</h3>
 		<ul id="list"></ul>
@@ -45,8 +247,6 @@
 
 			} 
 		}
-
-
 
 		function removeNumber(){
 
