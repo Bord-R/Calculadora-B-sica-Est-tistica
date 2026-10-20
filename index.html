@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calculadora de Estátistica</title>
+</head>
+<body>
+	<main>
+
+		<input type="number" id="myinput" placeholder="insira um valor">
+
+		<button onclick="addNumber()">adicionar numero a lista</button>
+
+		<button onclick="removeNumber()">remover numero a lista</button>
+
+		<button onclick="calculator()">calcular estátistica</button>
+
+		<button onclick="clearList()">limpar lista</button>
+
+		<h3>Lista de Valores:</h3>
+		<ul id="list"></ul>
+
+		<h3>Estátisticas:</h3>
+		<ul id="estatistics"></ul>
+
+	</main>
+
+	<script>
+
+		const listValues = document.getElementById("list");
+		const estatistics = document.getElementById("estatistics");
+
+		function addNumber(){
+			
+			let input = document.getElementById("myinput");
+			let value = input.value;
+
+			if (value != '' && !isNaN(value)){
+
+				const newLi = document.createElement("li");
+				newLi.textContent = value;
+				listValues.appendChild(newLi);
+				input = '';
+
+			} 
+		}
+
+
+
+		function removeNumber(){
+
+			listValues.removeChild(list.lastChild);
+		
+		}
+
+		function calculator(){
+
+			estatistics.innerHTML = '';
+			const list = createArray();
+			
+			if (list.length === 0){ 
+				return;
+			}
+
+			let calculus = [list, avarage(list), median(list), mode(list)];
+
+			for (let i = 0; i < calculus.length; i++){
+
+				let newLi = document.createElement("li");
+
+				if (Array.isArray(calculus[i])){
+
+					newLi.textContent = "[" + calculus[i].join(", ") + "]";
+
+					} else {
+
+						newLi.textContent = calculus[i];
+
+					}
+				
+				estatistics.appendChild(newLi);
+
+			}
+		}
+
+		function avarage(_list){
+		
+		const msgdefault = "média: "
+
+		let sum = 0;
+
+		for (let i = 0; i < _list.length; i++){
+
+			sum += _list[i];
+
+		}
+
+		let result = sum/_list.length;
+		
+		return msgdefault + result.toString();
+
+		}
+
+		function median(_list){
+
+		const msgdefault = "mediana: "
+
+		let orderedList = _list.sort((a, b) => a - b);
+
+		let centralValue = Math.floor(_list.length/2);
+		
+		let result = 0;
+
+		if (_list.length % 2 == 0){
+
+			result = (orderedList[centralValue - 1] + orderedList[centralValue]) / 2;
+			return msgdefault + result.toString();
+			
+		}
+
+		result = orderedList[centralValue];
+
+		return msgdefault + result.toString();
+		
+		}
+
+		function mode(_list){
+
+		const msgdefault = "moda: ";
+		let frequency = {};
+		let maxFrequency = 0;
+
+		for (let i in _list){
+
+			frequency[_list[i]] = (frequency[_list[i]] || 0) + 1;
+
+			if (frequency[_list[i]] > maxFrequency){
+
+				maxFrequency = frequency[_list[i]];
+			
+			}
+		}
+
+		if (maxFrequency === 1){
+			return "sem moda, lista amodal";
+		}
+			
+		let modes = [];
+
+		for (let i in frequency){
+
+			if (frequency[i] === maxFrequency){
+				modes.push(Number(i));
+			}
+		}
+
+		if (modes.length === 1){
+
+			return msgdefault + "[" + modes.join(", ") + "]. lista unimodal";
+
+			} else if (modes.length === 2){
+
+				return msgdefault + "[" + modes.join(", ") + "]. lista bimodal";
+
+			} else {
+
+				return msgdefault + "[" + modes.join(", ") + "]. lista multimodal";
+
+			}
+		}
+
+		function createArray(){
+
+			let liList = listValues.querySelectorAll("li");
+			let listNumbers = Array.from(liList).map(li => Number(li.textContent));
+			return listNumbers;
+
+		}
+
+		function clearList(){
+
+			listValues.innerHTML = '';
+			estatistics.innerHTML = '';
+
+		}
+	
+	</script>
+</body>
+</html>
