@@ -232,10 +232,19 @@
 
 		const listValues = document.getElementById("list");
 		const estatistics = document.getElementById("estatistics");
+		const input = document.getElementById("myinput");
+
+		function KeyDown(_event){
+
+			if (_event.key === 'Enter'){
+				addNumber();
+			} 
+		}
+
+		input.addEventListener("keydown", KeyDown)
 
 		function addNumber(){
 			
-			let input = document.getElementById("myinput");
 			let value = input.value;
 
 			if (value != '' && !isNaN(value)){
@@ -243,7 +252,6 @@
 				const newLi = document.createElement("li");
 				newLi.textContent = value;
 				listValues.appendChild(newLi);
-				input = '';
 
 			} 
 		}
